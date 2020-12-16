@@ -84,5 +84,11 @@ export const tetris = createSlice({
   },
 });
 
-export const { changeGameState } = tetris.actions;
+export const {
+  changeGameState,
+  tick,
+  pressLeft,
+  pressRight,
+  pressUp,
+} = tetris.actions;
 export default tetris.reducer;

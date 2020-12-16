@@ -2,6 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import BStick from "./atoms/BStick";
 import { PlayerBlock } from "./PlayerBlock";
+import { ReducerType } from "../../rootReducer";
+import { useSelector } from "react-redux";
+// import {} from "../../slices/tetris";
+
 const AppShell = styled.div`
   min-width: 400px;
   min-height: ${24 * 22}px;
@@ -20,18 +24,19 @@ const InShell = styled.div`
   width: ${24 * 12}px;
   height: ${24 * 22}px;
   background-color: rgba(0, 0, 0, 0.8);
+  border: 24px solid rgba(255, 255, 255, 0.9);
+  box-sizing: border-box;
   position: absolute;
   bottom: 0;
   left: 0;
 `;
 
 const NextBox = styled.div`
-  /* background-color: black; */
   width: ${24 * 4}px;
 `;
 
-// cyan lime  blue purple yellow orange red
 const GamePane = () => {
+  const { localState } = useSelector((state: ReducerType) => state.tetris);
   return (
     <AppShell>
       <StatusPane>
@@ -47,7 +52,7 @@ const GamePane = () => {
         </NextBox>
       </StatusPane>
       <InShell>
-        {/* <PlayerBlock blockType="T" rotation={0} r={5} c={0} /> */}
+        <PlayerBlock />
       </InShell>
     </AppShell>
   );
