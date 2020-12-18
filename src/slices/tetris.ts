@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { BlockType } from "../tetris/components/atoms/BStick";
+import { getBlockArea, getBlockMaxRotation } from "../utils/tetrisUtil";
 
 interface LocalState {
   score: number;
@@ -8,6 +9,7 @@ interface LocalState {
     r: number;
     c: number;
     rotation: number;
+    axis: number; // 회전축 (I의 경우 2,1,2,1...)
   };
   // 플레이어 상태 개입 전의 pane
   pane: number[][];
@@ -26,10 +28,11 @@ const initialState: Tetris = {
   localState: {
     score: 0,
     playerBlock: {
-      currentBlock: "J",
+      currentBlock: "I",
       r: 0,
       c: 0,
-      rotation: 0,
+      rotation: 1,
+      axis: 2,
     },
     pane: [
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -70,16 +73,27 @@ export const tetris = createSlice({
     },
     pressRight(state) {
       // 오른쪽으로 이동하는 명령
-      if (state.localState.playerBlock.c < 10) state.localState.playerBlock.c++;
+      const { c } = getBlockArea(
+        state.localState.playerBlock.currentBlock,
+        state.localState.playerBlock.rotation
+      );
+      if (state.localState.playerBlock.c < 10 - c)
+        state.localState.playerBlock.c++;
     },
-    pressUp(state, action: PayloadAction<{ maxRotate: number }>) {
+    pressUp(state) {
       // 미노 회전 명령
       const rt = state.localState.playerBlock.rotation + 1;
-      if (rt > action.payload.maxRotate) {
+      if (
+        rt >= getBlockMaxRotation(state.localState.playerBlock.currentBlock)
+      ) {
         state.localState.playerBlock.rotation = 0;
       } else {
         state.localState.playerBlock.rotation = rt;
       }
+      state.localState.playerBlock.c += state.localState.playerBlock.axis;
+      if (state.localState.playerBlock.axis === 2)
+        state.localState.playerBlock.axis = 1;
+      else state.localState.playerBlock.axis = 2;
     },
   },
 });

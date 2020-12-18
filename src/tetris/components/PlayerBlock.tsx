@@ -9,6 +9,9 @@ const PlayerBlock = () => {
     <BStick
       blockType={localState.playerBlock.currentBlock}
       rotation={localState.playerBlock.rotation}
+      row={localState.playerBlock.r}
+      col={localState.playerBlock.c}
+      ingame={true}
     />
   );
 };

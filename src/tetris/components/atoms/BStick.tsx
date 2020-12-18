@@ -11,12 +11,16 @@ const BlockTypeObj: { [key: string]: [number, BlockColor] } = {
   Z: [5, "red"],
   T: [6, "purple"],
 };
-const BWrapper = styled.div`
+
+const BWrapper = styled.div<{ row: number; col: number; ingame: boolean }>`
   /* background-color: rgba(0, 0, 0, 0.5); */
   width: ${24 * 4}px;
   height: ${24 * 4}px;
   display: flex; /* grid */
   flex-wrap: wrap;
+  ${({ ingame }) => ingame && "position: absolute;"}
+  top: ${({ row }) => row * 24}px;
+  left: ${({ col }) => col * 24}px;
 `;
 
 const Row = styled.div`
@@ -26,7 +30,7 @@ const Row = styled.div`
 `;
 
 // 4차원 배열로..
-const blockFlag = [
+export const blockFlag = [
   [
     [
       [1, 1, 1, 1],
@@ -168,14 +172,20 @@ T 미노: T스핀을 할 때 쓰이는 테트리미노. 지정 색깔은 자주�
 const BStick = ({
   blockType = "I",
   rotation = 0,
+  row = 0,
+  col = 0,
+  ingame = false,
 }: {
   blockType?: BlockType;
   rotation?: number;
+  row?: number;
+  col?: number;
+  ingame?: boolean;
 }) => {
   let color = BlockTypeObj[blockType][1];
   let blockNumber = BlockTypeObj[blockType][0];
   return (
-    <BWrapper>
+    <BWrapper row={row} col={col} ingame={ingame}>
       {blockFlag[blockNumber][rotation].map((x, i) => {
         const cols = x.map((y, j) => {
           return (

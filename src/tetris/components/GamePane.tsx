@@ -4,7 +4,6 @@ import BStick from "./atoms/BStick";
 import { PlayerBlock } from "./PlayerBlock";
 import { ReducerType } from "../../rootReducer";
 import { useSelector } from "react-redux";
-// import {} from "../../slices/tetris";
 
 const AppShell = styled.div`
   min-width: 400px;
@@ -41,7 +40,7 @@ const GamePane = () => {
     <AppShell>
       <StatusPane>
         <div>닉네임</div>
-        <div>점수: 0</div>
+        <div>점수: {localState.score}</div>
         <div>Next: </div>
         <NextBox>
           <BStick blockType="T" />
